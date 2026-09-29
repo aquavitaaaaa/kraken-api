@@ -146,8 +146,14 @@ def main():
     ap.add_argument("--jar"); ap.add_argument("--runelite")
     a = ap.parse_args()
     jar = Path(a.jar) if a.jar else fetch(a.runelite or default_version())
+    if not jar.is_file(): sys.exit(f"jar not found: {jar}")
+    try:
+        hooks = json.load(open(a.hooks))
+        checks = build_checks(hooks)
+    except OSError as e: sys.exit(f"cannot read hooks: {e}")
+    except json.JSONDecodeError as e: sys.exit(f"hooks.json is not valid JSON: {e}")
+    except (KeyError, TypeError) as e: sys.exit(f"hooks.json is missing or has a malformed key: {e}")
     classes = load(jar)
-    checks = build_checks(json.load(open(a.hooks)))
     fails = 0
     print(f"jar: {jar}\nhooks: {a.hooks}\n")
     print(f"{'STATUS':<7}{'HOOK':<52}RESOLVED / REASON")
