@@ -292,6 +292,8 @@ that can be run in its own GUI from the `colosim` package under `src/test/java`.
 
 Please see the game updates and [how to update the API guide](docs/UPDATING.md) for more detailed information.
 
+After each RuneLite update, run `python3 scripts/check_hooks.py` (needs only Python 3). It downloads the injected client for `runeLiteVersion` in `build.gradle` and prints a PASS/FAIL table for every class, field and method in `hooks.json`. It exits non-zero on any stale hook. Use `--runelite <version>`, `--jar <file>` or `--hooks <file>` to check other combinations. It checks structure only; multipliers and garbage values still have to be confirmed against the manual-mapping guide and at runtime.
+
 ## Running Tests
 
 Please see the [testing guide](docs/TESTS.md) for more information on running tests.
